@@ -1,0 +1,96 @@
+/* STYLEHUB Authentication Pages Styling */
+
+.auth-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  min-height: 70vh;
+  background-color: var(--bg-app);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  padding: 40px;
+  text-align: left;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.auth-header h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  color: var(--secondary);
+}
+
+.auth-header p {
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 10px;
+  border-radius: var(--radius-sm);
+  background-color: var(--secondary);
+  color: white;
+  transition: var(--transition);
+}
+
+.auth-btn:hover {
+  background-color: var(--primary);
+}
+
+/* Footer links switch */
+.auth-footer {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+.auth-footer a {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive adjustment rules */
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 30px 20px;
+  }
+  .auth-header h1 {
+    font-size: 1.75rem;
+  }
+}

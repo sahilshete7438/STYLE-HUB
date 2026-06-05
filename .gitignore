@@ -1,0 +1,26 @@
+# Master Ignores for STYLE-HUB full-stack project
+
+# Frontend Ignores
+frontend/node_modules/
+frontend/dist/
+frontend/.env*
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# Backend Ignores
+**/target/
+**/.mvn/
+**/mvnw
+**/mvnw.cmd
+**/.idea/
+**/.vscode/
+**/*.class
+**/*.jar
+**/*.war
+
+# OS & Log Files
+.DS_Store
+Thumbs.db
+*.log
