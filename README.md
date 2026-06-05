@@ -271,8 +271,8 @@ Register a new account through the UI, or use any account you've created.
 
 ### Admin Panel
 - **URL:** `/admin`
-- **Email:** `admin@stylehub.com`
-- **Password:** `admin1234`
+- **Email:** `admin@test.com`
+- **Password:** `test123`
 
 ### Payment Sandbox
 - **Card OTP Code:** `123456`

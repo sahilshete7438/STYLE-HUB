@@ -9,7 +9,10 @@ function AdminLogin({ onSuccess }) {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    if (email === "admin@stylehub.com" && password === "admin1234") {
+    if (
+      (email === "admin@stylehub.com" && password === "admin1234") ||
+      (email === "admin@test.com" && password === "test123")
+    ) {
       localStorage.setItem("isAdminLoggedIn", "true");
       onSuccess();
     } else {
@@ -33,7 +36,7 @@ function AdminLogin({ onSuccess }) {
             <input
               id="admin-email"
               type="email"
-              placeholder="admin@stylehub.com"
+              placeholder="admin@test.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
