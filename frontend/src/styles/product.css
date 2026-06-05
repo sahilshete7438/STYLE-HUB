@@ -572,3 +572,47 @@
     padding: 24px;
   }
 }
+
+/* Write Review Modal Styles */
+.review-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left;
+}
+
+.rating-select-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rating-select-container label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--secondary);
+}
+
+.rating-select-stars {
+  display: flex;
+  gap: 8px;
+}
+
+.star-select-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: var(--border);
+  transition: var(--transition);
+  outline: none;
+  display: flex;
+}
+
+.star-select-btn:hover {
+  transform: scale(1.15);
+}
+
+.star-select-btn.active {
+  color: var(--accent);
+}

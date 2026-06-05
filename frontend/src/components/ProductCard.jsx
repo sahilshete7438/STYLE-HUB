@@ -11,6 +11,22 @@ function ProductCard({ product }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSize, setSelectedSize] = useState("M");
   const [quantity, setQuantity] = useState(1);
+  const [reviews, setReviews] = useState([]);
+  const [loadingReviews, setLoadingReviews] = useState(false);
+
+  const handleOpenModal = async () => {
+    setIsModalOpen(true);
+    setQuantity(1);
+    setLoadingReviews(true);
+    try {
+      const res = await axios.get(`http://localhost:8080/reviews/product/${product.id}`);
+      setReviews(res.data);
+    } catch (err) {
+      console.error("Error fetching reviews", err);
+    } finally {
+      setLoadingReviews(false);
+    }
+  };
 
   // Quick Add (direct click on card button, quantity = 1)
   const handleQuickAdd = async (e) => {
@@ -102,10 +118,16 @@ function ProductCard({ product }) {
     { author: "Vikram R.", rating: 5, comment: "Exceeded my expectations. The tailoring detail and sleeve design feels very high-end." }
   ];
 
+  const reviewsToDisplay = reviews && reviews.length > 0 ? reviews : mockReviews;
+  const totalReviewsCount = reviewsToDisplay.length;
+  const averageRating = totalReviewsCount > 0
+    ? (reviewsToDisplay.reduce((sum, r) => sum + r.rating, 0) / totalReviewsCount).toFixed(1)
+    : "0.0";
+
   return (
     <>
       {/* Product Grid Card */}
-      <div className="product-card fade-in" onClick={() => { setIsModalOpen(true); setQuantity(1); }}>
+      <div className="product-card fade-in" onClick={handleOpenModal}>
         {/* Product Tag Badge */}
         {product.gender && (
           <span className="product-badge">{product.gender}</span>
@@ -165,14 +187,17 @@ function ProductCard({ product }) {
               {/* Stars & Reviews summary */}
               <div className="product-modal-rating">
                 <div className="rating-stars">
-                  <Star size={16} fill="var(--accent)" stroke="none" />
-                  <Star size={16} fill="var(--accent)" stroke="none" />
-                  <Star size={16} fill="var(--accent)" stroke="none" />
-                  <Star size={16} fill="var(--accent)" stroke="none" />
-                  <Star size={16} fill="var(--accent)" stroke="none" />
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      size={16}
+                      fill={parseFloat(averageRating) >= star ? "var(--accent)" : "none"}
+                      stroke="var(--accent)"
+                    />
+                  ))}
                 </div>
                 <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-light)" }}>
-                  5.0 (3 verified reviews)
+                  {averageRating} ({totalReviewsCount} verified review{totalReviewsCount !== 1 ? "s" : ""})
                 </span>
               </div>
 
@@ -216,7 +241,7 @@ function ProductCard({ product }) {
                       <td>Availability</td>
                       <td>
                         {product.stock > 0 ? (
-                          <span style={{ color: "var(--success)", fontWeight: 600 }}>In Stock ({product.stock} units)</span>
+                          <span style={{ color: "var(--success)", fontWeight: 600 }}>In Stock</span>
                         ) : (
                           <span style={{ color: "var(--danger)", fontWeight: 600 }}>Out of Stock</span>
                         )}
@@ -252,21 +277,30 @@ function ProductCard({ product }) {
               {/* Reviews List */}
               <div className="reviews-section">
                 <h4>Customer Reviews</h4>
-                <div className="reviews-scroller">
-                  {mockReviews.map((rev, idx) => (
-                    <div className="review-item" key={idx}>
-                      <div className="review-header">
-                        <span className="review-author">{rev.author}</span>
-                        <div className="rating-stars">
-                          {Array.from({ length: rev.rating }).map((_, i) => (
-                            <Star key={i} size={11} fill="var(--accent)" stroke="none" />
-                          ))}
+                {loadingReviews ? (
+                  <p style={{ fontSize: "0.85rem", color: "var(--text-light)" }}>Loading reviews...</p>
+                ) : (
+                  <div className="reviews-scroller">
+                    {reviewsToDisplay.map((rev, idx) => (
+                      <div className="review-item" key={idx}>
+                        <div className="review-header">
+                          <span className="review-author">{rev.author}</span>
+                          <div className="rating-stars">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <Star
+                                key={star}
+                                size={11}
+                                fill={rev.rating >= star ? "var(--accent)" : "none"}
+                                stroke={rev.rating >= star ? "none" : "var(--border)"}
+                              />
+                            ))}
+                          </div>
                         </div>
+                        <p className="review-comment">{rev.comment}</p>
                       </div>
-                      <p className="review-comment">{rev.comment}</p>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
             </div>

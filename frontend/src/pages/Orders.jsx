@@ -1,13 +1,21 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { Package } from "lucide-react";
+import { Package, X, Star } from "lucide-react";
 import "../styles/cart.css";
 
 function Orders() {
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Write Review Modal States
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState("");
+  const [submittingReview, setSubmittingReview] = useState(false);
+  const [submittedReviews, setSubmittedReviews] = useState([]); // track order ids reviewed in session
 
   const loadData = async () => {
     const userId = parseInt(localStorage.getItem("userId")) || 1;
@@ -28,6 +36,39 @@ function Orders() {
   useEffect(() => {
     loadData();
   }, []);
+
+  const handleOpenReviewModal = (order) => {
+    setSelectedOrder(order);
+    setRating(5);
+    setComment("");
+    setIsReviewModalOpen(true);
+  };
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    if (!selectedOrder) return;
+    setSubmittingReview(true);
+
+    const authorName = localStorage.getItem("userName") || "Verified Customer";
+
+    try {
+      await axios.post("http://localhost:8080/reviews", {
+        productId: selectedOrder.productId,
+        author: authorName,
+        rating: rating,
+        comment: comment
+      });
+
+      alert("Review submitted successfully! Thank you for your feedback.");
+      setSubmittedReviews([...submittedReviews, selectedOrder.id]);
+      setIsReviewModalOpen(false);
+      setSubmittingReview(false);
+    } catch (err) {
+      console.error("Error submitting review", err);
+      alert("Failed to submit review. Try again.");
+      setSubmittingReview(false);
+    }
+  };
 
   // Correlate orders with actual product details
   const ordersWithProducts = orders.map((order) => {
@@ -99,6 +140,16 @@ function Orders() {
                           {order.paymentStatus || "Pending"}
                         </span>
                       </span>
+                      {order.status === "Delivered" && !submittedReviews.includes(order.id) && (
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={() => handleOpenReviewModal(order)}
+                          style={{ padding: "6px 12px", fontSize: "0.72rem", marginLeft: "auto", height: "30px", display: "flex", alignItems: "center" }}
+                        >
+                          Write a Review
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -165,6 +216,71 @@ function Orders() {
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* Write Review Modal Overlay */}
+      {isReviewModalOpen && selectedOrder && (
+        <div className="product-modal-overlay" onClick={() => setIsReviewModalOpen(false)}>
+          <div className="product-modal-card" style={{ maxWidth: "500px", gridTemplateColumns: "1fr" }} onClick={(e) => e.stopPropagation()}>
+            <button className="product-modal-close" onClick={() => setIsReviewModalOpen(false)} aria-label="Close modal">
+              <X size={18} />
+            </button>
+            <div className="product-modal-details-panel" style={{ padding: "30px" }}>
+              <div className="product-modal-category">WRITE A REVIEW</div>
+              <h2 className="product-modal-title" style={{ fontSize: "1.4rem", marginBottom: "8px" }}>
+                Review: {selectedOrder.product?.name || `Product ID: ${selectedOrder.productId}`}
+              </h2>
+              <p style={{ fontSize: "0.85rem", color: "var(--text-light)", marginBottom: "20px" }}>
+                Your review will be shared publicly on the product's details page.
+              </p>
+
+              <form onSubmit={handleSubmitReview} className="review-modal-form">
+                {/* Stars selector */}
+                <div className="rating-select-container">
+                  <label>Your Rating</label>
+                  <div className="rating-select-stars">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        className={`star-select-btn ${rating >= star ? "active" : ""}`}
+                        onClick={() => setRating(star)}
+                        aria-label={`Rate ${star} stars`}
+                      >
+                        <Star size={26} fill={rating >= star ? "var(--accent)" : "none"} />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Comment input */}
+                <div className="form-group">
+                  <label htmlFor="review-comment" style={{ fontSize: "0.9rem", fontWeight: 600, color: "var(--secondary)", marginBottom: "8px", display: "block" }}>
+                    Your Review Comment
+                  </label>
+                  <textarea
+                    id="review-comment"
+                    rows="4"
+                    placeholder="Describe your experience with this apparel. What is the fabric quality, sizing, and styling like?"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    required
+                    style={{ width: "100%", padding: "12px", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)", outline: "none", resize: "vertical", fontFamily: "inherit", fontSize: "0.9rem" }}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn"
+                  disabled={submittingReview}
+                  style={{ width: "100%", padding: "12px", backgroundColor: "var(--primary)" }}
+                >
+                  {submittingReview ? "Submitting Review..." : "Submit Review"}
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
       )}
     </div>
