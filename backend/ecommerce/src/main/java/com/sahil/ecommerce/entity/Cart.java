@@ -16,13 +16,16 @@ public class Cart {
 
     private int quantity;
 
+    private String size;
+
     public Cart() {}
 
-    public Cart(Long id, Long userId, Long productId, int quantity) {
+    public Cart(Long id, Long userId, Long productId, int quantity, String size) {
         this.id = id;
         this.userId = userId;
         this.productId = productId;
         this.quantity = quantity;
+        this.size = size;
     }
 
     public Long getId() { return id; }
@@ -36,4 +39,7 @@ public class Cart {
 
     public int getQuantity() { return quantity; }
     public void setQuantity(int quantity) { this.quantity = quantity; }
+
+    public String getSize() { return size; }
+    public void setSize(String size) { this.size = size; }
 }

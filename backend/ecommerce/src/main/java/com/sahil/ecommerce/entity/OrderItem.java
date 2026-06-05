@@ -24,12 +24,14 @@ public class OrderItem {
 
     private String paymentStatus;
 
+    private String size;
+
     public OrderItem() {}
 
     public OrderItem(Long id, Long userId, Long productId,
                      int quantity, double totalPrice,
                      String status, String paymentMethod,
-                     String paymentStatus) {
+                     String paymentStatus, String size) {
         this.id = id;
         this.userId = userId;
         this.productId = productId;
@@ -38,6 +40,7 @@ public class OrderItem {
         this.status = status;
         this.paymentMethod = paymentMethod;
         this.paymentStatus = paymentStatus;
+        this.size = size;
     }
 
     public Long getId() { return id; }
@@ -63,4 +66,7 @@ public class OrderItem {
 
     public String getPaymentStatus() { return paymentStatus; }
     public void setPaymentStatus(String paymentStatus) { this.paymentStatus = paymentStatus; }
+
+    public String getSize() { return size; }
+    public void setSize(String size) { this.size = size; }
 }

@@ -195,7 +195,7 @@ function AdminOrders() {
                         {product?.name || `Product ID: ${order.productId}`}
                       </h4>
                       <p style={{ fontSize: "0.8rem", color: "var(--text-light)", marginTop: "2px" }}>
-                        Unit Price: ₹ {product?.price || 0} | Quantity: {order.quantity}
+                        Unit Price: ₹ {product?.price || 0} | Quantity: {order.quantity} {order.size && `| Size: ${order.size}`}
                       </p>
                     </div>
                   </div>

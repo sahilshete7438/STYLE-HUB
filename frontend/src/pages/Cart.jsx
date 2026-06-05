@@ -101,6 +101,11 @@ function Cart() {
                   <div className="cart-item-details">
                     <h3 className="cart-item-name">{product?.name || `Product ID: ${item.productId}`}</h3>
                     <p className="cart-item-meta">{product?.description || "High quality apparel style description."}</p>
+                    {item.size && (
+                      <div className="cart-item-size" style={{ fontSize: "0.82rem", color: "var(--text-light)", marginTop: "4px", marginBottom: "4px" }}>
+                        Size: <strong style={{ color: "var(--secondary)" }}>{item.size}</strong>
+                      </div>
+                    )}
                     <div className="cart-item-price">₹ {product?.price || 0}</div>
                   </div>
 

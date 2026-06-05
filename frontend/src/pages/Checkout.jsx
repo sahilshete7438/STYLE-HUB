@@ -246,7 +246,8 @@ function Checkout() {
           totalPrice: (item.product?.price || 0) * item.quantity,
           status: "Pending",
           paymentMethod: dbPaymentMethod,
-          paymentStatus: dbPaymentStatus
+          paymentStatus: dbPaymentStatus,
+          size: item.size || "M"
         });
       });
       await Promise.all(orderPromises);
@@ -524,16 +525,23 @@ function Checkout() {
             {/* List items briefly */}
             <div className="checkout-items-preview">
               {cartWithProducts.map((item) => (
-                <div key={item.id} className="checkout-item-preview-row">
-                  <div>
-                    <span className="checkout-item-preview-name" title={item.product?.name}>
-                      {item.product?.name || `Product ID: ${item.productId}`}
-                    </span>
-                    <span className="checkout-item-preview-qty"> × {item.quantity}</span>
+                <div key={item.id} className="checkout-item-preview-row" style={{ display: "flex", flexDirection: "column", gap: "2px", borderBottom: "1px solid var(--border)", paddingBottom: "10px", marginBottom: "10px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", width: "100%", alignItems: "center" }}>
+                    <div>
+                      <span className="checkout-item-preview-name" title={item.product?.name} style={{ fontWeight: 600 }}>
+                        {item.product?.name || `Product ID: ${item.productId}`}
+                      </span>
+                      <span className="checkout-item-preview-qty"> × {item.quantity}</span>
+                    </div>
+                    <div className="checkout-item-preview-price" style={{ fontWeight: 600 }}>
+                      ₹ {(item.product?.price || 0) * item.quantity}
+                    </div>
                   </div>
-                  <div className="checkout-item-preview-price">
-                    ₹ {(item.product?.price || 0) * item.quantity}
-                  </div>
+                  {item.size && (
+                    <div style={{ fontSize: "0.75rem", color: "var(--text-light)" }}>
+                      Size: <strong style={{ color: "var(--secondary)" }}>{item.size}</strong>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

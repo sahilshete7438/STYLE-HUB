@@ -124,8 +124,13 @@ function Orders() {
                   />
                   <div className="order-info">
                     <h4 className="order-product-name">{product?.name || `Product ID: ${order.productId}`}</h4>
-                    <div className="order-meta-info">
-                      Unit Price: ₹ {product?.price || 0}
+                    <div className="order-meta-info" style={{ display: "flex", gap: "15px", flexWrap: "wrap", marginBottom: "4px" }}>
+                      <span>Unit Price: ₹ {product?.price || 0}</span>
+                      {order.size && (
+                        <span>
+                          Size: <strong style={{ color: "var(--secondary)" }}>{order.size}</strong>
+                        </span>
+                      )}
                     </div>
                     <div className="order-price-qty">
                       Total: ₹ {order.totalPrice} <span style={{ fontWeight: 400, fontSize: "0.85rem", color: "var(--text-light)" }}>({order.quantity} item{order.quantity > 1 ? "s" : ""})</span>

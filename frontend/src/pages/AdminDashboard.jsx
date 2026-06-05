@@ -401,7 +401,7 @@ function AdminDashboard() {
                                       {product?.name || `Product ID: ${order.productId}`}
                                     </div>
                                     <div style={{ fontSize: "0.75rem", color: "var(--text-light)" }}>
-                                      {product?.gender} • {product?.category}
+                                      {product?.gender} • {product?.category} {order.size && `• Size: ${order.size}`}
                                     </div>
                                   </div>
                                 </div>

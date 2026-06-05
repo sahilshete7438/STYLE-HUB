@@ -44,14 +44,15 @@ function ProductCard({ product }) {
       await axios.post("http://localhost:8080/cart", {
         userId: userId,
         productId: product.id,
-        quantity: 1
+        quantity: 1,
+        size: "M"
       });
       
       // Notify navbar to refresh count
       window.dispatchEvent(new Event("cart-updated"));
       
       // Trigger toast
-      setToastMessage(`${product.name} added to cart!`);
+      setToastMessage(`${product.name} (M) added to cart!`);
       setShowToast(true);
       setTimeout(() => {
         setShowToast(false);
@@ -77,7 +78,8 @@ function ProductCard({ product }) {
       await axios.post("http://localhost:8080/cart", {
         userId: userId,
         productId: product.id,
-        quantity: quantity
+        quantity: quantity,
+        size: selectedSize
       });
       
       // Notify navbar to refresh count
