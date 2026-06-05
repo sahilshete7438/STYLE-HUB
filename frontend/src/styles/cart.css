@@ -288,3 +288,129 @@
     align-self: flex-start;
   }
 }
+
+/* Order Status Timeline Stepper */
+.order-timeline-container {
+  margin-top: 25px;
+  background-color: var(--bg-app);
+  padding: 24px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.order-timeline {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 0 40px;
+}
+
+.timeline-line-track {
+  position: absolute;
+  top: 50%;
+  left: 40px;
+  right: 40px;
+  height: 4px;
+  background-color: var(--border);
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.timeline-line-fill {
+  height: 100%;
+  background-color: var(--primary);
+  width: 0%;
+  transition: width 0.6s ease-in-out;
+  border-radius: 20px;
+}
+
+.timeline-line-fill.completed {
+  background-color: var(--success);
+}
+
+.timeline-step {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timeline-node {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--bg-card);
+  border: 3px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-light);
+  transition: var(--transition);
+}
+
+.timeline-step.active .timeline-node {
+  border-color: var(--primary);
+  background-color: var(--bg-card);
+  color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+}
+
+.timeline-step.completed .timeline-node {
+  border-color: var(--primary);
+  background-color: var(--primary);
+  color: white;
+}
+
+.timeline-step.delivered.completed .timeline-node {
+  border-color: var(--success);
+  background-color: var(--success);
+  color: white;
+}
+
+.timeline-labels-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  margin-top: 10px;
+}
+
+.timeline-label-col {
+  width: 100px;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: var(--transition);
+}
+
+.timeline-label-col.active {
+  color: var(--secondary);
+}
+
+.timeline-label-col.completed {
+  color: var(--primary);
+}
+
+.timeline-label-col.delivered-completed {
+  color: var(--success);
+}
+
+/* Mobile responsive timeline adjustments */
+@media (max-width: 576px) {
+  .order-timeline {
+    padding: 0 15px;
+  }
+  .timeline-line-track {
+    left: 15px;
+    right: 15px;
+  }
+  .timeline-label-col {
+    width: 80px;
+    font-size: 0.72rem;
+  }
+}

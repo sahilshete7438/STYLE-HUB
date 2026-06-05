@@ -102,6 +102,66 @@ function Orders() {
                     </div>
                   </div>
                 </div>
+
+                {/* Visual Order status timeline tracker */}
+                {(() => {
+                  const currentStatus = order.status || "Pending";
+                  let stepLevel = 1;
+                  if (currentStatus === "Shipped") stepLevel = 2;
+                  if (currentStatus === "Delivered") stepLevel = 3;
+
+                  let fillWidth = "0%";
+                  if (stepLevel === 2) fillWidth = "50%";
+                  if (stepLevel === 3) fillWidth = "100%";
+
+                  return (
+                    <div className="order-timeline-container">
+                      <div className="order-timeline">
+                        {/* Progress line */}
+                        <div className="timeline-line-track">
+                          <div
+                            className={`timeline-line-fill ${stepLevel === 3 ? "completed" : ""}`}
+                            style={{ width: fillWidth }}
+                          ></div>
+                        </div>
+
+                        {/* Step 1: Placed */}
+                        <div className={`timeline-step ${stepLevel >= 1 ? "completed" : ""}`}>
+                          <div className="timeline-node">
+                            {stepLevel >= 1 ? "✓" : "1"}
+                          </div>
+                        </div>
+
+                        {/* Step 2: Shipped */}
+                        <div className={`timeline-step ${stepLevel > 2 ? "completed" : stepLevel === 2 ? "active" : ""}`}>
+                          <div className="timeline-node">
+                            {stepLevel > 2 ? "✓" : "2"}
+                          </div>
+                        </div>
+
+                        {/* Step 3: Delivered */}
+                        <div className={`timeline-step delivered ${stepLevel === 3 ? "completed" : ""}`}>
+                          <div className="timeline-node">
+                            {stepLevel === 3 ? "✓" : "3"}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Labels Row */}
+                      <div className="timeline-labels-row">
+                        <div className={`timeline-label-col ${stepLevel >= 1 ? "completed" : ""}`}>
+                          Order Placed
+                        </div>
+                        <div className={`timeline-label-col ${stepLevel > 2 ? "completed" : stepLevel === 2 ? "active" : ""}`}>
+                          Shipped
+                        </div>
+                        <div className={`timeline-label-col ${stepLevel === 3 ? "delivered-completed" : ""}`}>
+                          Delivered
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
             );
           })}
