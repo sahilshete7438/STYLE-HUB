@@ -9,9 +9,13 @@ function AdminLogin({ onSuccess }) {
   const handleLogin = (e) => {
     e.preventDefault();
 
+    const isLocalhost =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1";
+
     if (
       (email === "admin@stylehub.com" && password === "admin1234") ||
-      (email === "admin@test.com" && password === "test123")
+      (isLocalhost && email === "admin@test.com" && password === "test123")
     ) {
       localStorage.setItem("isAdminLoggedIn", "true");
       onSuccess();
