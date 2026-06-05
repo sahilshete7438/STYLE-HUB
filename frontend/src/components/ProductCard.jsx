@@ -113,14 +113,7 @@ function ProductCard({ product }) {
     }
   };
 
-  // Pre-configured custom mock reviews
-  const mockReviews = [
-    { author: "Aarav S.", rating: 5, comment: "Fits like a glove! The organic cotton fabric is incredibly soft and breathable. Highly recommend!" },
-    { author: "Neha K.", rating: 4, comment: "Really nice colors and holds up well after multiple washes. I suggest sizing up if you like a loose fit." },
-    { author: "Vikram R.", rating: 5, comment: "Exceeded my expectations. The tailoring detail and sleeve design feels very high-end." }
-  ];
-
-  const reviewsToDisplay = reviews && reviews.length > 0 ? reviews : mockReviews;
+  const reviewsToDisplay = reviews || [];
   const totalReviewsCount = reviewsToDisplay.length;
   const averageRating = totalReviewsCount > 0
     ? (reviewsToDisplay.reduce((sum, r) => sum + r.rating, 0) / totalReviewsCount).toFixed(1)
@@ -187,21 +180,27 @@ function ProductCard({ product }) {
               <h2 className="product-modal-title">{product.name}</h2>
               
               {/* Stars & Reviews summary */}
-              <div className="product-modal-rating">
-                <div className="rating-stars">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      size={16}
-                      fill={parseFloat(averageRating) >= star ? "var(--accent)" : "none"}
-                      stroke="var(--accent)"
-                    />
-                  ))}
+              {totalReviewsCount > 0 ? (
+                <div className="product-modal-rating">
+                  <div className="rating-stars">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star
+                        key={star}
+                        size={16}
+                        fill={parseFloat(averageRating) >= star ? "var(--accent)" : "none"}
+                        stroke="var(--accent)"
+                      />
+                    ))}
+                  </div>
+                  <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-light)" }}>
+                    {averageRating} ({totalReviewsCount} verified review{totalReviewsCount !== 1 ? "s" : ""})
+                  </span>
                 </div>
-                <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-light)" }}>
-                  {averageRating} ({totalReviewsCount} verified review{totalReviewsCount !== 1 ? "s" : ""})
-                </span>
-              </div>
+              ) : (
+                <div className="product-modal-rating">
+                  <span style={{ fontSize: "0.85rem", color: "var(--text-light)" }}>No reviews yet</span>
+                </div>
+              )}
 
               <div className="product-modal-price">₹ {product.price}</div>
               
@@ -281,6 +280,10 @@ function ProductCard({ product }) {
                 <h4>Customer Reviews</h4>
                 {loadingReviews ? (
                   <p style={{ fontSize: "0.85rem", color: "var(--text-light)" }}>Loading reviews...</p>
+                ) : reviewsToDisplay.length === 0 ? (
+                  <div style={{ padding: "20px", textAlign: "center", color: "var(--text-light)", fontSize: "0.88rem", backgroundColor: "var(--bg-app)", borderRadius: "var(--radius-sm)", border: "1px dashed var(--border)" }}>
+                    No reviews yet. Be the first to review this product!
+                  </div>
                 ) : (
                   <div className="reviews-scroller">
                     {reviewsToDisplay.map((rev, idx) => (
